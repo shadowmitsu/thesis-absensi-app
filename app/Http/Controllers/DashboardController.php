@@ -64,6 +64,6 @@ class DashboardController extends Controller
 
 
         $attendance = Attendance::where('user_id', $user->id)->whereDate('date', today())->first();
-        return view('dashboard.user', compact('canCheckIn', 'settings'));
+        return view('dashboard.user', compact('canCheckIn', 'settings', 'attendance'));
     }
 }

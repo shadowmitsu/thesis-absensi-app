@@ -43,7 +43,7 @@
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
                         <a href="index.html">
-                            <img class="img-fluid" src="{{ asset('storage/'.get_setting('logo')) }}" style="max-width: 120px;" alt="Theme-Logo" />
+                            <img class="img-fluid" src="{{ asset('storage/'.get_setting('logo')) }}" style="max-width: 80px;" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu icon-toggle-right"></i>

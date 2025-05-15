@@ -66,7 +66,7 @@
                         </div>
                         <form action="{{ route('attendance.checkout.store') }}" method="POST">
                             @csrf
-                            <input type="hidden" name="attendance_id" value="{{ $adminAttendance->id }}">
+                            <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
                             <button type="submit" class="btn btn-warning btn-lg w-100">
                                 <i class="fas fa-sign-out-alt me-2"></i> Check-out Sekarang
                             </button>

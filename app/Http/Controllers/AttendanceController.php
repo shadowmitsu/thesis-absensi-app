@@ -64,7 +64,8 @@ class AttendanceController extends Controller
         $attendance->check_out = Carbon::now('Asia/Jakarta')->format('H:i:s');
         $attendance->save();
 
-        return response()->json(['message' => 'Check-out berhasil!']);
+        session()->flash('success', 'Check-in berhasil!');
+        return redirect()->back();
     }
 
 

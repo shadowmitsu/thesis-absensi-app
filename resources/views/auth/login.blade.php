@@ -77,7 +77,7 @@
                     <form class="md-float-material form-material" method="POST" action="{{ url('login') }}" autocomplete="off">
                         @csrf
                         <div class="text-center">
-                            <img src="{{ asset('storage/'.get_setting('logo')) }}" alt="logo.png">
+                            <img src="{{ asset('storage/'.get_setting('logo')) }}" style="width: 80px;" alt="logo.png">
                         </div>
                         <div class="auth-box card">
                             <div class="card-block">
