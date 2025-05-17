@@ -21,7 +21,7 @@
                         <span class="pcoded-mtext">Riwayat Perizinan</span>
                     </a>
                 </li>
-                @if (Auth::user()->role == 'admin')    
+                @if (Auth::user()->role == 'admin')
                     <li class="{{ Request::is('positions*') ? 'active' : '' }}">
                         <a href="{{ route('positions.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="feather icon-map-pin"></i></span>
@@ -37,10 +37,16 @@
                     <li class="{{ Request::is('settings*') ? 'active' : '' }}">
                         <a href="{{ route('settings.index') }}" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="feather icon-sliders"></i></span>
-                            <span class="pcoded-mtext">Pengaturan</span>
+                            <span class="pcoded-mtext">Pengaturan Website</span>
                         </a>
                     </li>
                 @endif
+                <li class="{{ Request::is('profile') ? 'active' : '' }}">
+                    <a href="{{ route('profile') }}" class="waves-effect waves-dark">
+                        <span class="pcoded-micon"><i class="feather icon-settings"></i></span>
+                        <span class="pcoded-mtext">Pengaturan Profil</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

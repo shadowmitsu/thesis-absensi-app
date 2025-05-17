@@ -71,7 +71,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5 class="mb-0 text-white">Data Pengajuan Izin</h5>
                         @if (Auth::user()->role != 'admin')
-                            <button class="btn btn-outline-success rounded-pill text-white" type="button"
+                            <button class="btn btn-success rounded-pill text-white" type="button"
                                 onclick="toggleExcuseForm()">
                                 <i class="fas fa-plus me-1"></i> Ajukan Izin
                             </button>

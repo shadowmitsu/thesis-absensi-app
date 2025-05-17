@@ -64,4 +64,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/excuses/history/list', [ExcuseController::class, 'historyList'])->name('excuses.history.list');
     Route::patch('/excuses/{excuse}/update-status', [ExcuseController::class, 'updateStatus'])->name('excuses.updateStatus');
 
+
+    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
+    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+
 });

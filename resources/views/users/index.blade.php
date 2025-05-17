@@ -26,7 +26,7 @@
                         </div>
 
                         <a href="{{ route('users.create') }}"
-                            class="btn btn-success btn-sm mt-3 mt-md-0 ms-md-3 flex-shrink-0"
+                            class="btn btn-success rounded-pill text-white mt-3 mt-md-0 ms-md-3 flex-shrink-0"
                             aria-label="Tambah pengguna baru">
                             <i class="fas fa-plus-circle me-2"></i> Tambah Pengguna
                         </a>
@@ -49,7 +49,7 @@
                                 </tr>
                             </thead>
                             <tbody id="usersTableBody">
-                                <!-- Data akan dimuat di sini -->
+                               
                             </tbody>
                         </table>
 
@@ -59,7 +59,7 @@
 
                         <nav>
                             <ul class="pagination justify-content-center" id="pagination">
-                                <!-- Pagination dinamis -->
+                            
                             </ul>
                         </nav>
                     </div>
