@@ -8,6 +8,7 @@ use App\Http\Controllers\PositionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\UserController;
 use App\Models\Attendance;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (Auth::user()) {
+        return redirect()->route('dashboard');
+    }
     return view('auth.login');
 });
 
