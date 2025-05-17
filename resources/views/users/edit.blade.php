@@ -38,6 +38,17 @@
 
                         <div class="row mb-4">
                             <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" id="email" name="email" value="{{ old('email', $user->email) }}"
+                                        class="form-control" placeholder="Masukkan email aktif" required>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-md-6">
                                 <label for="role" class="form-label">Role</label>
                                 <select name="role" id="role" class="form-select" required>
                                     <option value="user" {{ $user->role == 'user' ? 'selected' : '' }}>User</option>
@@ -71,8 +82,8 @@
                                 <label for="gender" class="form-label">Jenis Kelamin</label>
                                 <select name="gender" id="gender" class="form-select">
                                     <option value="">-- Pilih --</option>
-                                    <option value="male"
-                                        {{ ($user->detail->gender ?? '') == 'male' ? 'selected' : '' }}>Laki-laki
+                                    <option value="male" {{ ($user->detail->gender ?? '') == 'male' ? 'selected' : '' }}>
+                                        Laki-laki
                                     </option>
                                     <option value="female"
                                         {{ ($user->detail->gender ?? '') == 'female' ? 'selected' : '' }}>Perempuan

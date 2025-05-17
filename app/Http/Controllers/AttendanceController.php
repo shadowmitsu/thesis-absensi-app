@@ -12,60 +12,83 @@ class AttendanceController extends Controller
 {
     public function storeCheckIn(Request $request)
     {
+        date_default_timezone_set('Asia/Jakarta');
+
         $settings = Setting::first();
         $whitelistedIps = explode(',', $settings->whitelisted_ips);
-        if (!in_array(request()->ip(), $whitelistedIps)) {
-            session()->flash('error', 'IP Anda tidak terdaftar dalam whitelist.');
-            return redirect()->back();
+
+        if (!in_array($request->ip(), $whitelistedIps)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'IP Anda tidak terdaftar dalam whitelist.'
+            ], 403);
         }
 
-        $existingAttendance = Attendance::where('user_id', Auth::user()->id)
-            ->whereDate('date', Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-m-d'))
+        $today = Carbon::now()->format('Y-m-d');
+        $existingAttendance = Attendance::where('user_id', Auth::id())
+            ->whereDate('date', $today)
             ->first();
 
         if ($existingAttendance) {
-            session()->flash('error', 'Anda sudah melakukan check-in hari ini.');
-            return redirect()->back();
+            return response()->json([
+                'success' => false,
+                'message' => 'Anda sudah melakukan check-in hari ini.'
+            ], 409);
         }
 
         $attendance = new Attendance();
-        $attendance->user_id = Auth::user()->id;
-        $attendance->date = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-m-d');
-        $attendance->check_in = Carbon::parse($request->check_in)->setTimezone('Asia/Jakarta')->format('H:i:s');
+        $attendance->user_id = Auth::id();
+        $attendance->date = $today;
+        $attendance->check_in = Carbon::parse($request->check_in)->format('H:i:s');
         $attendance->status = 'present';
-        $attendance->check_in_ip_address = request()->ip();
-        $attendance->created_at = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s');
-        $attendance->updated_at = Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-m-d H:i:s');
+        $attendance->check_in_ip_address = $request->ip();
+        $attendance->created_at = Carbon::now();
+        $attendance->updated_at = Carbon::now();
         $attendance->save();
 
-        session()->flash('success', 'Check-in berhasil!');
-        return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'message' => 'Check-in berhasil!',
+            'check_in_time' => $attendance->check_in
+        ]);
     }
 
 
     public function storeCheckOut(Request $request)
     {
+        date_default_timezone_set('Asia/Jakarta');
+
+        $settings = Setting::first();
+
+        // Cek apakah IP di whitelist
+        $whitelistedIps = explode(',', $settings->whitelisted_ips);
+        if (!in_array($request->ip(), $whitelistedIps)) {
+            return response()->json(['message' => 'IP Anda tidak terdaftar dalam whitelist.'], 403);
+        }
+
         $attendance = Attendance::where('id', $request->attendance_id)
-            ->whereDate('created_at', Carbon::now()->setTimezone('Asia/Jakarta')->format('Y-m-d'))
+            ->whereDate('created_at', Carbon::now('Asia/Jakarta')->format('Y-m-d'))
             ->first();
 
         if (!$attendance) {
-            return response()->json(['message' => 'Absensi tidak ditemukan.'], 400);
+            return response()->json(['message' => 'Absensi tidak ditemukan.'], 404);
         }
 
-        $settings = Setting::first();
         $checkOutStartTime = $settings->check_out_start;
         $currentTime = Carbon::now('Asia/Jakarta')->format('H:i');
 
         if ($checkOutStartTime > $currentTime) {
-            return response()->json(['message' => 'Anda belum bisa melakukan check-out, waktu check-out belum tiba.'], 400);
+            return response()->json(['message' => 'Belum waktunya check-out.'], 400);
         }
 
         $attendance->check_out = Carbon::now('Asia/Jakarta')->format('H:i:s');
+        $attendance->check_out_ip_address = $request->ip(); // Simpan IP check-out
         $attendance->save();
 
-        session()->flash('success', 'Check-in berhasil!');
-        return redirect()->back();
+        return response()->json([
+            'success' => true,
+            'check_out_time' => $attendance->check_out
+        ]);
     }
 
 

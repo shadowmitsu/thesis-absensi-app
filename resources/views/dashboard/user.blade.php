@@ -12,27 +12,26 @@
                     <h5 class="mb-0">Status Check-in</h5>
                 </div>
 
-                @if ($canCheckIn)
-                    <div class="alert alert-success d-flex align-items-center p-3 rounded">
-                        <i class="fas fa-check-circle me-2"></i>
-                        <p class="mb-0">Anda sudah melakukan check-in pada pukul
-                            <strong>{{ $canCheckIn->check_in }}</strong> WIB.<br>Semangat menjalani aktivitas hari ini!
-                            🚀
+                <div id="checkInContainer">
+                    @if ($canCheckIn)
+                        <div class="alert alert-success d-flex align-items-center p-3 rounded">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <p class="mb-0">
+                                Anda sudah melakukan check-in pada pukul
+                                <strong>{{ $canCheckIn->check_in }}</strong> WIB.<br>
+                                Semangat menjalani aktivitas hari ini! 🚀
+                            </p>
+                        </div>
+                    @else
+                        <p class="mb-4 text-muted">
+                            Mulailah hari Anda dengan semangat! Lakukan check-in untuk memulai aktivitas dan catat kehadiran
+                            Anda.
                         </p>
-                    </div>
-                @elseif (!$canCheckIn)
-                    <p class="mb-4 text-muted">Mulailah hari Anda dengan semangat! Lakukan check-in untuk memulai
-                        aktivitas
-                        dan catat kehadiran Anda.</p>
 
-                    <form action="{{ route('attendance.checkin.store') }}" method="POST">
-                        @csrf
                         <button id="checkInButton" class="btn btn-success btn-lg w-100">Check-in</button>
-                    </form>
-                @else
-                    <p class="alert alert-info mb-4 text-muted">Absensi sudah dilakukan untuk hari ini. Terima kasih!
-                    </p>
-                @endif
+                        <div id="checkInStatus" class="mt-3"></div>
+                    @endif
+                </div>
             </div>
         </div>
 
@@ -64,13 +63,11 @@
                             <p class="text-muted">Sudah waktunya untuk menyelesaikan hari kerja Anda. Silakan lakukan
                                 check-out di bawah ini:</p>
                         </div>
-                        <form action="{{ route('attendance.checkout.store') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="attendance_id" value="{{ $attendance->id }}">
-                            <button type="submit" class="btn btn-warning btn-lg w-100">
-                                <i class="fas fa-sign-out-alt me-2"></i> Check-out Sekarang
-                            </button>
-                        </form>
+
+                        <input type="hidden" id="attendanceId" value="{{ $canCheckIn->id }}">
+                        <button id="checkOutButton" class="btn btn-warning btn-lg w-100">
+                            <i class="fas fa-sign-out-alt me-2"></i> Check-out Sekarang
+                        </button>
                     @endif
                 @else
                     <div class="alert alert-info shadow-sm p-3 rounded">
@@ -82,4 +79,72 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('checkInButton')?.addEventListener('click', async () => {
+            const now = new Date();
+            const currentTime = now.toTimeString().slice(0, 8);
+
+            try {
+                const response = await axios.post("{{ route('attendance.checkin.store') }}", {
+                    check_in: currentTime
+                });
+
+                if (response.data.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Check-in Berhasil!',
+                        text: `Check-in pada pukul ${response.data.check_in_time} WIB.`,
+                        confirmButtonText: 'OK'
+                    });
+
+                    document.getElementById('checkInButton').disabled = true;
+                    document.getElementById('checkInButton').innerText = 'Sudah Check-in';
+                }
+
+            } catch (error) {
+                const message = error.response?.data?.message || 'Terjadi kesalahan saat check-in.';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: message,
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        });
+    </script>
+
+    <script>
+        document.getElementById('checkOutButton')?.addEventListener('click', async () => {
+            const attendanceId = document.getElementById('attendanceId').value;
+
+            try {
+                const response = await axios.post("{{ route('attendance.checkout.store') }}", {
+                    attendance_id: attendanceId
+                });
+
+                if (response.data.success || response.status === 200) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Check-out Berhasil!',
+                        text: `Sampai jumpa! Terima kasih atas kerja keras hari ini 💪`,
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        location.reload();
+                    });
+                }
+
+            } catch (error) {
+                const message = error.response?.data?.message || 'Terjadi kesalahan saat check-out.';
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Gagal!',
+                    text: message,
+                    confirmButtonText: 'Tutup'
+                });
+            }
+        });
+    </script>
 @endsection

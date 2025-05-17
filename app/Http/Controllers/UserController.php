@@ -49,6 +49,7 @@ class UserController extends Controller
     {
         $rules = [
             'username' => 'required|unique:users',
+            'email' => 'required|email|min:6|unique:users',
             'password' => 'required|min:6',
             'role' => 'required|in:admin,user',
             'full_name' => 'required',
@@ -57,12 +58,17 @@ class UserController extends Controller
         $messages = [
             'username.required' => 'Username wajib diisi.',
             'username.unique' => 'Username sudah digunakan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.min' => 'Email minimal 6 karakter.',
+            'email.unique' => 'Email sudah digunakan.',
             'password.required' => 'Password wajib diisi.',
             'password.min' => 'Password minimal 6 karakter.',
             'role.required' => 'Role wajib dipilih.',
             'role.in' => 'Role yang dipilih tidak valid.',
             'full_name.required' => 'Nama lengkap wajib diisi.',
         ];
+
 
         $validator = Validator::make($request->all(), $rules, $messages);
 
@@ -74,6 +80,7 @@ class UserController extends Controller
 
         $user = User::create([
             'username' => $request->username,
+            'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
@@ -102,13 +109,17 @@ class UserController extends Controller
     {
         $rules = [
             'username' => "required|unique:users,username,$id",
+            'email' => "required|email|unique:users,email,$id",
             'role' => 'required|in:admin,user',
             'full_name' => 'required',
         ];
 
+
         $messages = [
             'username.required' => 'Username wajib diisi.',
             'username.unique' => 'Username sudah digunakan.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah digunakan.',
             'role.required' => 'Role wajib dipilih.',
             'role.in' => 'Role tidak valid.',
@@ -126,6 +137,7 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->update([
             'username' => $request->username,
+            'email' => $request->email,
             'role' => $request->role,
         ]);
 

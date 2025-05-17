@@ -14,13 +14,13 @@
                 <div class="card-body">
                     <form id="userForm">
                         @csrf
-                        <div class="row mb-4">
+                        <div class="row">
                             <div class="col-md-6">
                                 <label for="username" class="form-label">Username</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-person"></i></span>
                                     <input type="text" id="username" name="username" value="{{ old('username') }}"
-                                        class="form-control" placeholder="Masukkan username" >
+                                        class="form-control" placeholder="Masukkan username">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -28,7 +28,17 @@
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-lock"></i></span>
                                     <input type="password" id="password" name="password" class="form-control"
-                                        placeholder="Masukkan password" >
+                                        placeholder="Masukkan password">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" id="email" name="email" value="{{ old('email') }}"
+                                        class="form-control" placeholder="Masukkan email aktif">
                                 </div>
                             </div>
                         </div>
@@ -36,7 +46,7 @@
                         <div class="row mb-4">
                             <div class="col-md-6">
                                 <label for="role" class="form-label">Role</label>
-                                <select name="role" id="role" class="form-select" >
+                                <select name="role" id="role" class="form-select">
                                     <option value="user" {{ old('role') == 'user' ? 'selected' : '' }}>User</option>
                                     <option value="admin" {{ old('role') == 'admin' ? 'selected' : '' }}>Admin</option>
                                 </select>
@@ -44,7 +54,7 @@
                             <div class="col-md-6">
                                 <label for="full_name" class="form-label">Nama Lengkap</label>
                                 <input type="text" id="full_name" name="full_name" value="{{ old('full_name') }}"
-                                    class="form-control" placeholder="Masukkan nama lengkap" >
+                                    class="form-control" placeholder="Masukkan nama lengkap">
                             </div>
                         </div>
 
