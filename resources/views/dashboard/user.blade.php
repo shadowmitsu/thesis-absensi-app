@@ -1,7 +1,7 @@
 @extends('layouts.app')
-
+@section('title', 'Dashboard Absensi')
 @section('page-title', ' Dashboard Absensi')
-@section('page-description', 'Analisa statistik absensi karyawan')
+@section('page-description', 'Kelola absensi kamu agar menjadi lebih baik.')
 
 @section('content')
     <div class="row g-4">

@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('title', 'Pengaturan Profile')
+@section('page-title', 'Pengaturan Profile')
+@section('page-description', 'Silahkan Edit Profile kamu atau rubah password kamu.')
 @section('content')
     <div class="row">
         <div class="col-lg-12 mx-auto">

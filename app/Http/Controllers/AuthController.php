@@ -47,7 +47,6 @@ class AuthController extends Controller
 
     public function updateProfile(Request $request)
     {
-        // return $request;
         $user = Auth::user();
 
         $rules = [
