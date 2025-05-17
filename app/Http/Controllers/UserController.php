@@ -7,14 +7,37 @@ use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\Position;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with(['detail.position'])->get();
-        return view('users.index', compact('users'));
+        return view('users.index');
     }
+
+    public function list(Request $request)
+    {
+        $query = User::with(['detail.position']);
+
+        if ($request->has('search') && $request->search != '') {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('username', 'like', "%{$search}%")
+                    ->orWhereHas('detail', function ($q2) use ($search) {
+                        $q2->where('full_name', 'like', "%{$search}%")
+                            ->orWhereHas('position', function ($q3) use ($search) {
+                                $q3->where('name', 'like', "%{$search}%");
+                            });
+                    });
+            });
+        }
+
+        $users = $query->paginate(10);
+
+        return response()->json($users);
+    }
+
 
     public function create()
     {
@@ -24,12 +47,30 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $rules = [
             'username' => 'required|unique:users',
             'password' => 'required|min:6',
             'role' => 'required|in:admin,user',
             'full_name' => 'required',
-        ]);
+        ];
+
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 6 karakter.',
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role yang dipilih tidak valid.',
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         $user = User::create([
             'username' => $request->username,
@@ -47,7 +88,7 @@ class UserController extends Controller
             'gender' => $request->gender,
         ]);
 
-        return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+        return response()->json(['message' => 'User berhasil ditambahkan.'], 200);
     }
 
     public function edit($id)
@@ -59,17 +100,32 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $rules = [
             'username' => "required|unique:users,username,$id",
-            'email' => "required|email|unique:users,email,$id",
             'role' => 'required|in:admin,user',
             'full_name' => 'required',
-        ]);
+        ];
+
+        $messages = [
+            'username.required' => 'Username wajib diisi.',
+            'username.unique' => 'Username sudah digunakan.',
+            'email.unique' => 'Email sudah digunakan.',
+            'role.required' => 'Role wajib dipilih.',
+            'role.in' => 'Role tidak valid.',
+            'full_name.required' => 'Nama lengkap wajib diisi.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
         $user = User::findOrFail($id);
         $user->update([
             'username' => $request->username,
-            'email' => $request->email,
             'role' => $request->role,
         ]);
 
@@ -91,7 +147,7 @@ class UserController extends Controller
             ]
         );
 
-        return redirect()->route('users.index')->with('success', 'User berhasil diperbarui.');
+        return response()->json(['message' => 'User berhasil diperbarui.'], 200);
     }
 
     public function destroy($id)
@@ -99,6 +155,6 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $user->delete();
 
-        return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+        return response()->json(['message' => 'User berhasil dihapus.']);
     }
 }

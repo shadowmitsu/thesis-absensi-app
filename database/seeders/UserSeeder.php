@@ -16,7 +16,6 @@ class UserSeeder extends Seeder
         $manager = Position::where('name', 'Manager')->first();
         $staff = Position::where('name', 'Staff')->first();
 
-        // Admin User
         $admin = User::create([
             'username' => 'admin01',
             'email' => 'admin@example.com',
@@ -31,10 +30,9 @@ class UserSeeder extends Seeder
             'phone' => '08123456789',
             'address' => 'Jl. Admin No.1',
             'birth_date' => '1990-01-01',
-            'gender' => 'Laki-laki',
+            'gender' => 'male',
         ]);
 
-        // Karyawan User
         $user = User::create([
             'username' => 'user01',
             'email' => 'user@example.com',
@@ -49,7 +47,7 @@ class UserSeeder extends Seeder
             'phone' => '082233445566',
             'address' => 'Jl. Karyawan No.2',
             'birth_date' => '1995-05-05',
-            'gender' => 'Perempuan',
+            'gender' => 'female',
         ]);
     }
 }

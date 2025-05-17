@@ -5,7 +5,7 @@
     <title>@yield('title') - {{ get_setting('site_name') }}</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" />
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -20,16 +20,21 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/icofont/css/icofont.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/icon/font-awesome/css/font-awesome.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/component.css') }}">
-    <link rel="stylesheet" href="{{ asset('bower_components/chartist/css/chartist.css') }}" type="text/css" media="all">
+    <link rel="stylesheet" href="{{ asset('bower_components/chartist/css/chartist.css') }}" type="text/css"
+        media="all">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/style.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/widget.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages.css') }}">    
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/pages.css') }}">
 
-    
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js" integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
     <script src="https://cdn.jsdelivr.net/npm/moment@2.29.1/moment.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -43,7 +48,8 @@
                 <div class="navbar-wrapper">
                     <div class="navbar-logo">
                         <a href="index.html">
-                            <img class="img-fluid" src="{{ asset('storage/'.get_setting('logo')) }}" style="max-width: 80px;" alt="Theme-Logo" />
+                            <img class="img-fluid" src="{{ asset('storage/' . get_setting('logo')) }}"
+                                style="max-width: 80px;" alt="Theme-Logo" />
                         </a>
                         <a class="mobile-menu" id="mobile-collapse" href="#!">
                             <i class="feather icon-menu icon-toggle-right"></i>
@@ -86,17 +92,18 @@
                                     <ul class="show-notification profile-notification dropdown-menu"
                                         data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
                                         <li>
-                                            <a href="{{ route('logout') }}" 
-                                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                            <a href="{{ route('logout') }}"
+                                                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 <i class="feather icon-log-out"></i> Logout
                                             </a>
-                                        
+
                                             <!-- Form logout yang disembunyikan -->
-                                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                            <form id="logout-form" action="{{ route('logout') }}" method="POST"
+                                                style="display: none;">
                                                 @csrf
                                             </form>
                                         </li>
-                                        
+
                                     </ul>
                                 </div>
                             </li>
@@ -145,7 +152,8 @@
     <script type="text/javascript" src="{{ asset('bower_components/popper.js/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/pages/waves/js/waves.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/jquery-slimscroll/js/jquery.slimscroll.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/jquery-slimscroll/js/jquery.slimscroll.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('bower_components/modernizr/js/modernizr.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/modernizr/js/css-scrollbars.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/sweetalert/js/sweetalert.min.js') }}"></script>
@@ -154,7 +162,7 @@
     <script src="{{ asset('assets/js/vertical/vertical-layout.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/script.min.js') }}"></script>
     @stack('scripts')
-    
+
 </body>
 
 </html>

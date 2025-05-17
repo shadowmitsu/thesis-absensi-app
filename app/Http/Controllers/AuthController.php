@@ -14,13 +14,11 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        // Validasi input
         $request->validate([
             'user_name_or_email' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // Cek apakah input adalah username atau email
         $credentials = [
             'password' => $request->password,
         ];
@@ -31,12 +29,12 @@ class AuthController extends Controller
             $credentials['username'] = $request->user_name_or_email;
         }
 
-        // Proses login
         if (Auth::attempt($credentials)) {
-            return redirect()->intended('/dashboard'); // Ganti dengan rute tujuan setelah login
+            return redirect()->intended('/dashboard');
         }
 
         return back()->withErrors(['user_name_or_email' => 'Username atau Email atau Password tidak sesuai']);
+
     }
 
     public function logout()

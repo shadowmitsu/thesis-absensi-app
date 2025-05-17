@@ -35,6 +35,7 @@ Route::middleware(['auth'])->group(function () {
     Route::post('attendance/checkout', [AttendanceController::class, 'storeCheckOut'])->name('attendance.checkout.store');
 
     Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
+    Route::get('/attendance/history/list', [AttendanceController::class, 'historyList'])->name('attendance.history.list');
     Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
     Route::post('/settings/store', [SettingController::class, 'store'])->name('settings.store');
 
@@ -47,10 +48,11 @@ Route::middleware(['auth'])->group(function () {
 
 
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+    Route::get('/users/list', [UserController::class, 'list'])->name('users.list');
     Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
     Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::post('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
+    Route::put('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
     Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::get('/excuses', [ExcuseController::class, 'index'])->name('excuses.index');
@@ -59,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/excuses/{id}', [ExcuseController::class, 'destroy'])->name('excuses.destroy');
 
     Route::get('/excuses/history', [ExcuseController::class, 'history'])->name('excuses.history');
+    Route::get('/excuses/history/list', [ExcuseController::class, 'historyList'])->name('excuses.history.list');
     Route::patch('/excuses/{excuse}/update-status', [ExcuseController::class, 'updateStatus'])->name('excuses.updateStatus');
 
 });

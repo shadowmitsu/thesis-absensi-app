@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,13 +12,22 @@ return new class extends Migration
     {
         Schema::create('user_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('position_id')->nullable()->constrained()->onDelete('set null');
+
+            $table->foreignId('user_id')
+                ->constrained('users')
+                ->onDelete('cascade');
+
+            $table->foreignId('position_id')
+                ->nullable()
+                ->constrained('positions')
+                ->nullOnDelete();
+
             $table->string('full_name');
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
             $table->date('birth_date')->nullable();
-            $table->string('gender')->nullable();
+            $table->enum('gender', ['male', 'female', 'other'])->nullable();
+
             $table->timestamps();
         });
     }

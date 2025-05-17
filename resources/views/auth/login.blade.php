@@ -74,10 +74,12 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-12">
-                    <form class="md-float-material form-material" method="POST" action="{{ url('login') }}" autocomplete="off">
+                    <form class="md-float-material form-material" method="POST" action="{{ url('login') }}"
+                        autocomplete="off">
                         @csrf
                         <div class="text-center">
-                            <img src="{{ asset('storage/'.get_setting('logo')) }}" style="width: 80px;" alt="logo.png">
+                            <img src="{{ asset('storage/' . get_setting('logo')) }}" style="width: 80px;"
+                                alt="logo.png">
                         </div>
                         <div class="auth-box card">
                             <div class="card-block">
@@ -88,38 +90,61 @@
                                 </div>
                                 <p class="text-muted text-center p-b-5">Masuk untuk manajemen Absensi</p>
                                 <div class="form-group form-primary">
-                                    <input type="text" name="user_name_or_email" class="form-control" required="" autocomplete="off">
+                                    <input type="text" name="user_name_or_email" class="form-control" required=""
+                                        autocomplete="off" id="new-username">
                                     <span class="form-bar"></span>
                                     <label class="form-label float-label">Username or Email</label>
                                 </div>
                                 <div class="form-group form-primary">
-                                    <input type="password" name="password" class="form-control" required="" autocomplete="off">
+                                    <input type="password" name="password" class="form-control" required=""
+                                        autocomplete="off" id="new-password">
                                     <span class="form-bar"></span>
                                     <label class="form-label float-label">Password</label>
                                 </div>
                                 <div class="row m-t-30">
                                     <div class="col-md-12">
                                         <div class="d-grid">
-                                            <button type="submit" class="btn btn-primary btn-md waves-effect text-center m-b-20">LOGIN</button>
+                                            <button type="submit"
+                                                class="btn btn-primary btn-md waves-effect text-center m-b-20">LOGIN</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </form>
-                    
-                    
+
+
                 </div>
             </div>
         </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if ($errors->any())
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Login Gagal',
+                text: '{{ $errors->first() }}',
+                confirmButtonText: 'Coba Lagi'
+            });
+        </script>
+    @endif
+    <script>
+        window.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('new-username').value = '';
+            document.getElementById('new-password').value = '';
+        });
+    </script>
 
     <script type="text/javascript" src="{{ asset('bower_components/jquery/js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/jquery-ui/js/jquery-ui.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/popper.js/js/popper.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="{{ asset('assets/pages/waves/js/waves.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('bower_components/jquery-slimscroll/js/jquery.slimscroll.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bower_components/jquery-slimscroll/js/jquery.slimscroll.js') }}">
+    </script>
     <script type="text/javascript" src="{{ asset('bower_components/modernizr/js/modernizr.js') }}"></script>
     <script type="text/javascript" src="{{ asset('bower_components/modernizr/js/css-scrollbars.js') }}"></script>
     <script type="text/javascript" src="{{ asset('assets/js/common-pages.js') }}"></script>

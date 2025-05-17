@@ -72,6 +72,17 @@ class AttendanceController extends Controller
     public function history(Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
+
+        $startDate = $request->start_date ? Carbon::parse($request->start_date) : now()->startOfDay();
+        $endDate = $request->end_date ? Carbon::parse($request->end_date)->endOfDay() : now()->endOfDay();
+
+        return view('attendance.history', compact('startDate', 'endDate'));
+    }
+
+    public function historyList(Request $request)
+    {
+        date_default_timezone_set('Asia/Jakarta');
+
         $checkInStart = Setting::first()->check_in_start;
         $checkInStart = Carbon::parse($checkInStart);
 
@@ -82,7 +93,7 @@ class AttendanceController extends Controller
 
         $user = auth()->user();
 
-        $attendances = Attendance::with(['user.userDetail'])
+        $query = Attendance::with(['user.userDetail'])
             ->whereBetween('date', [$startDate->toDateString(), $endDate->toDateString()])
             ->when($search, function ($query) use ($search) {
                 $query->whereHas('user.userDetail', function ($query) use ($search) {
@@ -92,15 +103,15 @@ class AttendanceController extends Controller
             ->when($user->role != 'admin', function ($query) use ($user) {
                 $query->where('user_id', $user->id);
             })
-            ->orderBy('date', 'desc')
-            ->get();
+            ->orderBy('date', 'desc');
+
+        $attendances = $query->paginate(10);
 
         foreach ($attendances as $attendance) {
             if ($attendance->check_in) {
                 $checkInTime = Carbon::parse($attendance->check_in);
                 if ($checkInTime->gt($checkInStart)) {
-                    $lateMinutes = $checkInStart->diffInMinutes($checkInTime);
-                    $attendance->late_minutes = $lateMinutes;
+                    $attendance->late_minutes = $checkInStart->diffInMinutes($checkInTime);
                 } else {
                     $attendance->late_minutes = 0;
                 }
@@ -109,7 +120,13 @@ class AttendanceController extends Controller
             }
         }
 
-        return view('attendance.history', compact('attendances', 'startDate', 'endDate', 'checkInStart'));
+        return response()->json([
+            'data' => $attendances->items(),
+            'current_page' => $attendances->currentPage(),
+            'last_page' => $attendances->lastPage(),
+            'per_page' => $attendances->perPage(),
+            'total' => $attendances->total(),
+        ]);
     }
 
 }
