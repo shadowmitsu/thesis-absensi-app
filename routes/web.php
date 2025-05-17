@@ -29,43 +29,55 @@ Route::get('login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('login', [AuthController::class, 'login']);
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::post('attendance/checkin', [AttendanceController::class, 'storeCheckIn'])->name('attendance.checkin.store');
-    Route::post('attendance/checkout', [AttendanceController::class, 'storeCheckOut'])->name('attendance.checkout.store');
+    Route::prefix('attendance')->name('attendance.')->group(function () {
+        Route::post('checkin', [AttendanceController::class, 'storeCheckIn'])->name('checkin.store');
+        Route::post('checkout', [AttendanceController::class, 'storeCheckOut'])->name('checkout.store');
 
-    Route::get('/attendance/history', [AttendanceController::class, 'history'])->name('attendance.history');
-    Route::get('/attendance/history/list', [AttendanceController::class, 'historyList'])->name('attendance.history.list');
-    Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');
-    Route::post('/settings/store', [SettingController::class, 'store'])->name('settings.store');
+        Route::get('history', [AttendanceController::class, 'history'])->name('history');
+        Route::get('history/list', [AttendanceController::class, 'history.list'])->name('history.list');
+    });
 
+    Route::prefix('settings')->name('settings.')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('index');
+        Route::post('/store', [SettingController::class, 'store'])->name('store');
+    });
 
-    Route::get('positions', [PositionController::class, 'index'])->name('positions.index');
-    Route::post('positions', [PositionController::class, 'store'])->name('positions.store');
-    Route::get('positions/{position}/edit', [PositionController::class, 'edit'])->name('positions.edit');
-    Route::put('positions/{position}', [PositionController::class, 'update'])->name('positions.update');
-    Route::delete('positions/{position}', [PositionController::class, 'destroy'])->name('positions.destroy');
+    Route::prefix('positions')->name('positions.')->group(function () {
+        Route::get('/', [PositionController::class, 'index'])->name('index');
+        Route::post('/', [PositionController::class, 'store'])->name('store');
+        Route::get('/{position}/edit', [PositionController::class, 'edit'])->name('edit');
+        Route::put('/{position}', [PositionController::class, 'update'])->name('update');
+        Route::delete('/{position}', [PositionController::class, 'destroy'])->name('destroy');
+    });
 
+    Route::prefix('users')->name('users.')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/list', [UserController::class, 'list'])->name('list');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/store', [UserController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}/update', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
 
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
-    Route::get('/users/list', [UserController::class, 'list'])->name('users.list');
-    Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
-    Route::post('/users/store', [UserController::class, 'store'])->name('users.store');
-    Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
-    Route::put('/users/{id}/update', [UserController::class, 'update'])->name('users.update');
-    Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::prefix('excuses')->name('excuses.')->group(function () {
+        Route::get('/', [ExcuseController::class, 'index'])->name('index');
+        Route::post('/', [ExcuseController::class, 'store'])->name('store');
+        Route::put('/{id}', [ExcuseController::class, 'update'])->name('update');
+        Route::delete('/{id}', [ExcuseController::class, 'destroy'])->name('destroy');
 
-    Route::get('/excuses', [ExcuseController::class, 'index'])->name('excuses.index');
-    Route::post('/excuses', [ExcuseController::class, 'store'])->name('excuses.store');
-    Route::put('/excuses/{id}', [ExcuseController::class, 'update'])->name('excuses.update');
-    Route::delete('/excuses/{id}', [ExcuseController::class, 'destroy'])->name('excuses.destroy');
+        Route::get('history', [ExcuseController::class, 'history'])->name('history');
+        Route::get('history/list', [ExcuseController::class, 'historyList'])->name('history.list');
 
-    Route::get('/excuses/history', [ExcuseController::class, 'history'])->name('excuses.history');
-    Route::get('/excuses/history/list', [ExcuseController::class, 'historyList'])->name('excuses.history.list');
-    Route::patch('/excuses/{excuse}/update-status', [ExcuseController::class, 'updateStatus'])->name('excuses.updateStatus');
+        Route::patch('/{excuse}/update-status', [ExcuseController::class, 'updateStatus'])->name('updateStatus');
+    });
 
-
-    Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
-    Route::put('/profile', [AuthController::class, 'updateProfile'])->name('profile.update');
+    Route::prefix('profile')->name('profile.')->group(function () {
+        Route::get('/', [AuthController::class, 'showProfile'])->name('show');
+        Route::put('/', [AuthController::class, 'updateProfile'])->name('update');
+    });
 
 });

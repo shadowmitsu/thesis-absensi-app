@@ -42,7 +42,7 @@
                     </li>
                 @endif
                 <li class="{{ Request::is('profile') ? 'active' : '' }}">
-                    <a href="{{ route('profile') }}" class="waves-effect waves-dark">
+                    <a href="{{ route('profile.show') }}" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="feather icon-settings"></i></span>
                         <span class="pcoded-mtext">Pengaturan Profil</span>
                     </a>

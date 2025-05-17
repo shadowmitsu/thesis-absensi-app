@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserDetail;
 use App\Models\Position;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,11 +14,17 @@ class UserController extends Controller
 {
     public function index()
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         return view('users.index');
     }
 
     public function list(Request $request)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $query = User::with(['detail.position']);
 
         if ($request->has('search') && $request->search != '') {
@@ -41,12 +48,18 @@ class UserController extends Controller
 
     public function create()
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $positions = Position::all();
         return view('users.create', compact('positions'));
     }
 
     public function store(Request $request)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $rules = [
             'username' => 'required|unique:users',
             'email' => 'required|email|min:6|unique:users',
@@ -100,6 +113,9 @@ class UserController extends Controller
 
     public function edit($id)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $user = User::with('detail')->findOrFail($id);
         $positions = Position::all();
         return view('users.edit', compact('user', 'positions'));
@@ -107,6 +123,9 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $rules = [
             'username' => "required|unique:users,username,$id",
             'email' => "required|email|unique:users,email,$id",
@@ -164,6 +183,9 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         $user = User::findOrFail($id);
         $user->delete();
 

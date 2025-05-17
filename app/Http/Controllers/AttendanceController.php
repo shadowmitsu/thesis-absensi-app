@@ -60,7 +60,6 @@ class AttendanceController extends Controller
 
         $settings = Setting::first();
 
-        // Cek apakah IP di whitelist
         $whitelistedIps = explode(',', $settings->whitelisted_ips);
         if (!in_array($request->ip(), $whitelistedIps)) {
             return response()->json(['message' => 'IP Anda tidak terdaftar dalam whitelist.'], 403);

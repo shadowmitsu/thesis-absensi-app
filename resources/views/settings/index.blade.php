@@ -6,16 +6,14 @@
 @section('content')
     <div class="row">
         <div class="col-sm-12">
-            <!-- Basic Inputs Validation start -->
             <div class="card">
                 <div class="card-header">
                     <h5>Basic Inputs Validation</h5>
                     <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
                 </div>
                 <div class="card-block">
-                    <form method="POST" action="{{ route('settings.store') }}" enctype="multipart/form-data">
+                    <form id="settingsForm" enctype="multipart/form-data">
                         @csrf
-
                         <div class="mb-3">
                             <label for="site_name" class="form-label">Site Name</label>
                             <input type="text" id="site_name" name="site_name"
@@ -42,14 +40,14 @@
                             <div class="col-md-6 mb-3">
                                 <label for="check_in_start" class="form-label">Check In Start</label>
                                 <input type="time" id="check_in_start" name="check_in_start"
-                                    value="{{ old('check_in_start', \Carbon\Carbon::parse($setting->check_in_start)->format('H:i') ?? '07:00') }}"
+                                    value="{{ old('check_in_start', \Carbon\Carbon::parse($setting->check_in_start ?? '07:00')->format('H:i')) }}"
                                     class="form-control" required>
                             </div>
 
                             <div class="col-md-6 mb-3">
                                 <label for="check_out_start" class="form-label">Check Out Start</label>
                                 <input type="time" id="check_out_start" name="check_out_start"
-                                    value="{{ old('check_out_start', \Carbon\Carbon::parse($setting->check_out_start)->format('H:i') ?? '16:00') }}"
+                                    value="{{ old('check_out_start', \Carbon\Carbon::parse($setting->check_out_start ?? '16:00')->format('H:i')) }}"
                                     class="form-control" required>
                             </div>
                         </div>
@@ -66,4 +64,58 @@
                 </div>
             </div>
         </div>
-    @endsection
+    </div>
+@endsection
+@push('scripts')
+    <script>
+        document.getElementById('settingsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const url = "{{ route('settings.store') }}";
+
+            const formData = new FormData(form);
+
+            axios.post(url, formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Berhasil',
+                        text: response.data.message,
+                        showConfirmButton: true
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(error => {
+                    if (error.response && error.response.status === 422) {
+                        const errors = error.response.data.errors;
+                        let message = '';
+                        Object.values(errors).forEach(arr => {
+                            arr.forEach(msg => {
+                                message += msg + '<br>';
+                            });
+                        });
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Validasi Gagal',
+                            html: message,
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: error.response?.data?.message ||
+                                'Terjadi kesalahan saat menyimpan pengaturan.'
+                        });
+                    }
+                });
+        });
+    </script>
+@endpush

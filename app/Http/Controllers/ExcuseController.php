@@ -73,42 +73,6 @@ class ExcuseController extends Controller
         return redirect()->route('excuses.index')->with('success', 'Izin berhasil diajukan.');
     }
 
-    public function update(Request $request, $id)
-    {
-        date_default_timezone_set('Asia/Jakarta');
-        $excuse = Excuse::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        $data = $request->validate([
-            'type' => 'required|in:sick,leave,personal',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after_or_equal:start_date',
-            'reason' => 'nullable|string',
-            'photo' => 'nullable|image|max:2048',
-        ]);
-
-        if ($request->hasFile('photo')) {
-            if ($excuse->photo) {
-                Storage::disk('public')->delete($excuse->photo);
-            }
-            $data['photo'] = $request->file('photo')->store('excuses', 'public');
-        }
-
-        $excuse->update($data);
-        return redirect()->route('excuses.index')->with('success', 'Izin berhasil diperbarui.');
-    }
-
-    public function destroy($id)
-    {
-        $excuse = Excuse::where('id', $id)->where('user_id', auth()->id())->firstOrFail();
-
-        if ($excuse->photo) {
-            Storage::disk('public')->delete($excuse->photo);
-        }
-
-        $excuse->delete();
-        return redirect()->route('excuses.index')->with('success', 'Izin berhasil dihapus.');
-    }
-
     public function historyList(Request $request)
     {
         date_default_timezone_set('Asia/Jakarta');
@@ -148,6 +112,9 @@ class ExcuseController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        if (Auth::user()->role != 'admin') {
+            abort(403);
+        }
         date_default_timezone_set('Asia/Jakarta');
         $excuse = Excuse::find($id);
 
