@@ -7,8 +7,8 @@
     <div class="row">
         <div class="col-md-7">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">List Positions</h5>
+                <div class="card-header bg-primary text-white rounded-top shadow-sm d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 text-white">List Positions</h5>
                     <a class="btn btn-success rounded-pill text-white" href="{{ route('positions.index') }}">+ Tambah Position</a>
                 </div>
                 <div class="card-body">
@@ -33,9 +33,13 @@
                                     <td>{{ $position->description }}</td>
                                     <td>
                                         <a href="{{ route('positions.index', ['edit' => $position->id]) }}"
-                                            class="btn btn-sm btn-warning">Edit</a>
-                                        <button class="btn btn-sm btn-danger btn-delete" data-id="{{ $position->id }}"
-                                            data-url="{{ route('positions.destroy', $position->id) }}">Hapus</button>
+                                            class="btn btn-sm btn-warning rounded-pill text-white">
+                                            <i class="fas fa-pencil-alt"></i> Edit
+                                        </a>
+                                        <button class="btn btn-sm btn-danger btn-delete rounded-pill text-white" data-id="{{ $position->id }}"
+                                            data-url="{{ route('positions.destroy', $position->id) }}">
+                                            <i class="fas fa-trash-alt"></i> Hapus
+                                        </button>
 
                                     </td>
                                 </tr>
@@ -78,9 +82,9 @@
 
                         <div class="d-flex justify-content-between">
                             <button type="submit"
-                                class="btn {{ isset($editPosition) ? 'btn-warning' : 'btn-primary' }}">{{ isset($editPosition) ? 'Perbarui' : 'Simpan' }}</button>
+                                class="btn {{ isset($editPosition) ? 'btn-warning' : 'btn-primary' }} rounded-pill text-white">{{ isset($editPosition) ? 'Perbarui' : 'Simpan' }}</button>
                             @if (isset($editPosition))
-                                <a href="{{ route('positions.index') }}" class="btn btn-secondary">Batal</a>
+                                <a href="{{ route('positions.index') }}" class="btn btn-secondary rounded-pill text-white">Batal</a>
                             @endif
                         </div>
                     </form>

@@ -88,17 +88,26 @@
                                 style="pointer-events:none;"></i>
                         </div>
 
+                        @php
+                            use Carbon\Carbon;
+                            date_default_timezone_set('Asia/Jakarta');
+
+                            $today = Carbon::now('Asia/Jakarta');
+                            $oneWeekAgo = $today->copy()->subDays(6);
+                        @endphp
+
                         <div class="col-md-4">
                             <label for="start_date" class="form-label fw-semibold">Tanggal Mulai</label>
                             <input type="date" name="start_date" id="start_date_filter" class="form-control rounded-3"
-                                value="{{ now()->startOfDay()->format('Y-m-d') }}">
+                                value="{{ $oneWeekAgo->format('Y-m-d') }}">
                         </div>
 
                         <div class="col-md-4">
                             <label for="end_date" class="form-label fw-semibold">Tanggal Selesai</label>
                             <input type="date" name="end_date" id="end_date_filter" class="form-control rounded-3"
-                                value="{{ now()->endOfDay()->format('Y-m-d') }}">
+                                value="{{ $today->format('Y-m-d') }}">
                         </div>
+
 
                         <div class="col-md-4">
                             <label for="status" class="form-label fw-semibold">Status</label>
@@ -325,7 +334,7 @@
                             } [status] || 'secondary');
 
                             const capitalize = str => str.charAt(0).toUpperCase() + str.slice(1);
-                           tbody.innerHTML += `
+                            tbody.innerHTML += `
                                 <tr>
                                     <td>${no}</td>
                                     <td>${excuse.user.user_detail?.full_name || '-'}</td>
@@ -336,8 +345,8 @@
                                         ${
                                             excuse.photo
                                             ? `<a href="/storage/${excuse.photo}" target="_blank" rel="noopener noreferrer">
-                                                <img src="/storage/${excuse.photo}" alt="Bukti Foto" style="max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 4px;">
-                                                </a>`
+                                                    <img src="/storage/${excuse.photo}" alt="Bukti Foto" style="max-width: 80px; max-height: 80px; object-fit: cover; border-radius: 4px;">
+                                                    </a>`
                                             : '<span class="text-muted">Tidak ada foto</span>'
                                         }
                                     </td>

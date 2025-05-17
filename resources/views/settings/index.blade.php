@@ -7,9 +7,8 @@
     <div class="row">
         <div class="col-sm-12">
             <div class="card">
-                <div class="card-header">
-                    <h5>Basic Inputs Validation</h5>
-                    <span>Add class of <code>.form-control</code> with <code>&lt;input&gt;</code> tag</span>
+                <div class="card-header bg-primary text-white rounded-top shadow-sm">
+                    <h5 class="text-white">Pengaturan Website</h5>
                 </div>
                 <div class="card-block">
                     <form id="settingsForm" enctype="multipart/form-data">
@@ -59,7 +58,7 @@
                                 value="{{ old('whitelisted_ips', $setting->whitelisted_ips ?? '') }}">
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <button type="submit" class="btn btn-primary rounded-pill text-white">Simpan</button>
                     </form>
                 </div>
             </div>

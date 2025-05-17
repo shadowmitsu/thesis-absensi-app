@@ -9,7 +9,7 @@
             <div class="card shadow-sm border-0 rounded-2">
                 <div
                     class="card-header bg-primary text-white rounded-top d-flex flex-wrap align-items-center justify-content-between gap-2">
-                    <h5 class="mb-0">Daftar Pengguna</h5>
+                    <h5 class="mb-0 text-white">Daftar Pengguna</h5>
                 </div>
 
 
@@ -112,10 +112,10 @@
                                     }</td>
                                     <td>${user.detail?.position?.name || '-'}</td>
                                     <td>
-                                        <a href="/users/${user.id}/edit" class="btn btn-primary btn-sm">
+                                        <a href="/users/${user.id}/edit" class="btn btn-primary btn-sm rounded-pill text-white">
                                             <i class="fas fa-pencil-alt"></i> Edit
                                         </a>
-                                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">
+                                        <button class="btn btn-danger btn-sm rounded-pill text-white" onclick="deleteUser(${user.id})">
                                             <i class="fas fa-trash-alt"></i> Delete
                                         </button>
                                     </td>
