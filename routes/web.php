@@ -41,7 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('checkout', [AttendanceController::class, 'storeCheckOut'])->name('checkout.store');
 
         Route::get('history', [AttendanceController::class, 'history'])->name('history');
-        Route::get('history/list', [AttendanceController::class, 'history.list'])->name('history.list');
+        Route::get('history/list', [AttendanceController::class, 'historyList'])->name('history.list');
     });
 
     Route::prefix('settings')->name('settings.')->group(function () {

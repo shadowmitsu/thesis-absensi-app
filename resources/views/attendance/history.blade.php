@@ -33,7 +33,7 @@
                         value="{{ $endDate->format('Y-m-d') }}" style="height: 38px; max-width: 200px;">
 
 
-                    <button type="submit" class="btn btn-primary rounded-pill px-4">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4" id="filterBtn">
                         <i class="fas fa-filter me-2"></i> Filter
                     </button>
                     <button type="button" id="resetBtn" class="btn btn-danger rounded-pill px-4">
